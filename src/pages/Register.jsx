@@ -23,7 +23,6 @@ function Register() {
   //Function to handle form submission and call the registerUser service
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const result = await registerUser(userInput);
       setMessage(result.message);
@@ -34,15 +33,14 @@ function Register() {
 
 
   //Here I return a simple form for user registration with fields for username, email, and password.
-  //When the form is submitted, it calls the handleSubmit function which interacts with the registerUser service to create a new user and displays any messages returned from the server.
   return (
     <div>
-      <h2>Register</h2>
+      <h2>TicoCars - Registro</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="username"
-          placeholder="Username"
+          placeholder="Nombre de usuario"
           value={userInput.username}
           onChange={handleChange}
         />
@@ -56,11 +54,11 @@ function Register() {
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Contraseña"
           value={userInput.password}
           onChange={handleChange}
         />
-        <button type="submit">Register</button>
+        <button type="submit">Registrarse</button>
       </form>
 
       {message && <p>{message}</p>}
