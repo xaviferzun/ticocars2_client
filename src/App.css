@@ -8,9 +8,6 @@
 body {
   background: linear-gradient(135deg, #141e30, #243b55);
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 /*Contenedor principal*/
@@ -89,4 +86,48 @@ body {
   border-radius: 10px;
   background-color: #1f2937;
   color: white;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #0f172a; /* dark navy */
+  color: white;
+  border-bottom: 1px solid #1e293b;
+}
+
+.nav-left h2 {
+  color: #3b82f6;
+}
+
+.nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #cbd5f5;
+  font-weight: 500;
+}
+
+.navbar a:hover {
+  color: white;
+}
+
+.navbar button {
+  background-color: #3b82f6;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #2563eb;
 }
