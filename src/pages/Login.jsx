@@ -1,8 +1,10 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {loginUser} from "../services/authService";
 
 //Here I create a simple login form that allows users to enter their email and password.
 function Login() {
+  const navigate = useNavigate(); //KAN-41 Hook to navigate to other pages after successful login
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
@@ -27,8 +29,9 @@ function Login() {
 
       //Save token in localStorage for future authenticated requests
       localStorage.setItem("token", result.token);
-
       setMessage("Ingreso existoso (Token guardado)");
+      //Navigate to the vehicles page
+      navigate("/vehicles");
     } catch (error) {
       setMessage(error.message);
     }
