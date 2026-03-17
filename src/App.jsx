@@ -1,19 +1,61 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; //Importing necessary components and pages for the application
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
+import MyVehicles from "./pages/MyVehicles";
 import "./App.css";
 
-//Main App component with routes for the application using React Router.
+//Navbar component
+function Navbar() {
+  const navigate = useNavigate();
+  //Check if user is authenticated
+  const isAuthenticated = !!localStorage.getItem("token");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/vehicles");
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="nav-left">
+        <h2>TicoCars</h2>
+      </div>
+
+      <div className="nav-right">
+        <Link to="/vehicles">Vehículos</Link>
+
+        {/* 👇 FIX AQUÍ */}
+        <Link to={isAuthenticated ? "/my-vehicles" : "/login"}>
+          Mis Vehículos
+        </Link>
+
+        <Link to="#">Inbox</Link>
+
+        {isAuthenticated ? (
+          <button onClick={handleLogout}>Cerrar sesión</button>
+        ) : (
+          <Link to="/login">Iniciar sesión</Link>
+        )}
+      </div>
+    </nav>
+  );
+}
+
 function App() {
   return (
     <Router>
+      <Navbar />
+
       <Routes>
-        <Route path="/" element={<Login />} />
+        {/* Main page */}
+        <Route path="/" element={<Vehicles />} />
+
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/vehicles/:id" element={<VehicleDetail />} />
+        <Route path="/my-vehicles" element={<MyVehicles />} />
       </Routes>
     </Router>
   );
