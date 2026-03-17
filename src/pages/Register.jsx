@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { registerUser } from "../services/authService";
+import {useState} from "react";
+import {registerUser} from "../services/authService";
 
 //Component for user registration
 function Register() {
@@ -30,7 +30,6 @@ function Register() {
       setMessage(error.message);
     }
   };
-
 
   //Here I return a simple form for user registration with fields for username, email, and password.
   return (
