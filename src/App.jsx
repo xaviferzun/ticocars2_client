@@ -57,6 +57,7 @@ function App() {
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/vehicles/:id" element={<VehicleDetail />} />
         <Route path="/my-vehicles" element={<MyVehicles />} />
+        <Route path="/inbox" element={<Inbox />} />
       </Routes>
     </Router>
   );

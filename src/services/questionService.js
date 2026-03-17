@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:5000/api/questions";
+const API_URL = "http://localhost:3000/api/questions";
 
 //KAN-43 Get questions for owner vehicles
 export const getOwnerQuestions = async () => {
@@ -12,12 +12,12 @@ export const getOwnerQuestions = async () => {
   return response.data;
 };
 
-//KAN-43 Answer a question
-export const answerQuestion = async (questionId, text) => {
+//Create new question
+export const createQuestion = async (data) => {
   const token = localStorage.getItem("token");
   const response = await axios.post(
-    `${API_URL}/${questionId}/answer`,
-    { text },
+    "http://localhost:3000/api/questions",
+    data,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -25,4 +25,20 @@ export const answerQuestion = async (questionId, text) => {
     }
   );
   return response.data;
+};
+
+//KAN-43 Answer a question
+export const answerQuestion = async (questionId, text) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(
+    "http://localhost:3000/api/answers",
+    { questionId, text },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data.answer; 
 };

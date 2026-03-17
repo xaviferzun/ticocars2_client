@@ -90,9 +90,11 @@ function Inbox() {
                   handleInputChange(q._id, e.target.value)
                 }
               />
-              <button onClick={() => handleAnswer(q._id)}>
-                Responder
-              </button>
+               <button
+                  disabled={!answers[q._id]}
+                  onClick={() => handleAnswer(q._id)}>
+                  Responder
+               </button>
             </div>
           )}
         </div>
