@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {getVehicles} from "../services/vehicleService";
+import { useEffect, useState } from "react";
+import { getVehicles } from "../services/vehicleService";
 import VehicleCard from "../components/VehicleCard";
 
 //Component to display the list of vehicles
@@ -17,11 +17,13 @@ function Vehicles() {
   const [yearMax, setYearMax] = useState("");
   const [status, setStatus] = useState("");
 
-  //KAN-32 Function to fetch vehicles with filters
-  const fetchVehicles = async () => {
-    setLoading(true);
-    try {
-      const filters = {
+  //KAN-32 State for debounced filters
+  const [filters, setFilters] = useState({});
+
+  //Debounce-  wait before applying filters
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setFilters({
         brand,
         model,
         priceMin,
@@ -29,27 +31,37 @@ function Vehicles() {
         yearMin,
         yearMax,
         status,
-      };
+      });
+    }, 500);
 
-      const data = await getVehicles(filters);
-      setVehicles(data.results);
-    } catch (error) {
-      setError("Error al cargar los vehículos");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //KAN-32 Hook to fetch vehicles when filters change
-  useEffect(() => {
-    fetchVehicles();
+    return () => clearTimeout(timeout);
   }, [brand, model, priceMin, priceMax, yearMin, yearMax, status]);
+
+  //Fetch vehicles when filters change
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      setLoading(true);
+      try {
+        const data = await getVehicles(filters);
+        setVehicles(data.results);
+      } catch (error) {
+        setError("Error al cargar los vehículos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVehicles();
+  }, [filters]);
+
   //Warnings
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>{error}</p>;
+
   return (
     <div>
       <h1>Lista de Vehículos</h1>
+
       {/* Filters */}
       <div className="filters">
         <input
@@ -58,7 +70,7 @@ function Vehicles() {
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
         />
-        
+
         <input
           type="text"
           placeholder="Modelo"
@@ -115,5 +127,4 @@ function Vehicles() {
   );
 }
 
-//Export the component
 export default Vehicles;
