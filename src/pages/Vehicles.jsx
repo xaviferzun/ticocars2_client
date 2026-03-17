@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getVehicles } from "../services/vehicleService";
+import {useEffect, useState} from "react";
+import {getVehicles} from "../services/vehicleService";
 import VehicleCard from "../components/VehicleCard";
 
 //Component to display the list of vehicles
