@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import MyVehicles from "./pages/MyVehicles";
+import Inbox from "./pages/Inbox";
 import "./App.css";
 
 //Navbar component
@@ -25,12 +26,12 @@ function Navbar() {
       <div className="nav-right">
         <Link to="/vehicles">Vehículos</Link>
 
-        {/* 👇 FIX AQUÍ */}
+        {/*My Vehicles*/}
         <Link to={isAuthenticated ? "/my-vehicles" : "/login"}>
           Mis Vehículos
         </Link>
 
-        <Link to="#">Inbox</Link>
+        <Link to="/inbox">Inbox</Link>
 
         {isAuthenticated ? (
           <button onClick={handleLogout}>Cerrar sesión</button>
