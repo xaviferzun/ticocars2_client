@@ -8,6 +8,10 @@ function Vehicles() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  //KAN-33 Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   //KAN-32 Filter states
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
@@ -32,6 +36,7 @@ function Vehicles() {
         yearMax,
         status,
       });
+      setCurrentPage(1); //Reset to first page when filters change
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -123,6 +128,33 @@ function Vehicles() {
           ))}
         </div>
       )}
+
+      {/* Pagination */}
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}>
+          Anterior
+        </button>
+
+        {/* Page numbers */}
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            style={{
+              fontWeight: currentPage === index + 1 ? "bold" : "normal",
+            }}>
+            {index + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}>
+          Siguiente
+        </button>
+      </div>
     </div>
   );
 }

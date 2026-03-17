@@ -2,10 +2,14 @@ import axios from "axios";
 const API_URL = "http://localhost:3000/api/vehicles";
 
 //Function to get all vehicles from the API
-export const getVehicles = async (filters = {}) => {
+export const getVehicles = async (filters = {}, page = 1) => {
   const response = await axios.get(API_URL, {
-    params: filters, //Axios converts this into query params
+    params: {
+      ...filters, //Spread filters as query parameters
+      page, //Add pagination parameter       
+    },
   });
+
   return response.data;
 };
 
