@@ -1,5 +1,6 @@
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Vehicles from "./pages/Vehicles";
 import "./App.css";
 
 //Main App
@@ -12,6 +13,10 @@ function App() {
 
       <div className="card">
         <Login />
+      </div>
+
+      <div className="card">
+        <Vehicles />
       </div>
     </div>
   );

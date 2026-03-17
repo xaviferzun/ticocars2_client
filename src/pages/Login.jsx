@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { loginUser } from "../services/authService";
+import {useState} from "react";
+import {loginUser} from "../services/authService";
 
 //Here I create a simple login form that allows users to enter their email and password.
 function Login() {
@@ -33,8 +33,6 @@ function Login() {
       setMessage(error.message);
     }
   };
-
-
   
   //Here I return a simple form for user login with fields for email and password.
   return (

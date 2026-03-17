@@ -81,3 +81,12 @@ body {
   font-size: 0.9rem;
   color: #22c55e;
 }
+
+/*Card de vehículos*/
+.vehicle-card {
+  border: 1px solid gray;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #1f2937;
+  color: white;
+}
