@@ -64,8 +64,10 @@ function Vehicles() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <h1>Lista de Vehículos</h1>
+    <div className="page-container">
+      <h1 style={{ color: "#0f172a", marginBottom: "24px" }}>
+        Encuentra tu próximo vehículo
+      </h1>
 
       {/* Filters */}
       <div className="filters">

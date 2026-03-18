@@ -33,34 +33,21 @@ function Register() {
 
   //Here I return a simple form for user registration with fields for username, email, and password.
   return (
-    <div>
-      <h2>TicoCars - Registro</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Nombre de usuario"
-          value={userInput.username}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={userInput.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={userInput.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Registrarse</button>
-      </form>
-
-      {message && <p>{message}</p>}
+    <div className="auth-page">
+      <div className="card">
+        <h2>TicoCars — Registro</h2>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="username" placeholder="Nombre de usuario"
+            value={userInput.username} onChange={handleChange} />
+          <input type="email" name="email" placeholder="Email"
+            value={userInput.email} onChange={handleChange} />
+          <input type="password" name="password" placeholder="Contraseña"
+            value={userInput.password} onChange={handleChange} />
+          <button type="submit">Registrarse</button>
+        </form>
+        <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 }

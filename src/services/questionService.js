@@ -42,3 +42,32 @@ export const answerQuestion = async (questionId, text) => {
 
   return response.data.answer; 
 };
+
+//Get questions made by logged user
+export const getUserQuestions = async () => {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get(
+    "http://localhost:3000/api/questions/user",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const getInbox = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(
+    "http://localhost:3000/api/questions/inbox",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+}; 
