@@ -1,4 +1,5 @@
 import {useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom";
 import {getMyVehicles, deleteVehicle, markAsSold, updateVehicle, createVehicle} from "../services/vehicleService";
 
 //KAN-42 Component to display user vehicles
@@ -8,7 +9,10 @@ const [isCreating, setIsCreating] = useState(false);
 const [editingVehicleId, setEditingVehicleId] = useState(null);
 const [editForm, setEditForm] = useState({});
 const [loading, setLoading] = useState(false);
+const [imageFile, setImageFile] = useState(null);
 const [error, setError] = useState(null);
+
+const navigate = useNavigate();
 
   //Fetch user vehicles on mount
   useEffect(() => {
@@ -41,9 +45,10 @@ const [error, setError] = useState(null);
   //KAN-42 CREATE vehicle
   const handleCreate = async () => {
     try {
-      const newVehicle = await createVehicle(editForm);
+      const newVehicle = await createVehicle(editForm, imageFile); //pass imageFile
       setVehicles((prev) => [newVehicle, ...prev]);
       setEditForm({});
+      setImageFile(null);
       setIsCreating(false);
     } catch (err) {
       console.error(err);
@@ -65,6 +70,11 @@ const [error, setError] = useState(null);
       console.error(err);
       setError("Error al marcar como vendido");
   }
+  };
+
+  //KAN-43 Handle image file selection
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
   };
 
   //KAN-42 Delete vehicle
@@ -92,15 +102,12 @@ const [error, setError] = useState(null);
   //KAN-42 Save edited vehicle
   const handleSave = async (id) => {
     try {
-      const updated = await updateVehicle(id, editForm);
-
+      await updateVehicle(id, editForm, imageFile); //pass imageFile
       setVehicles((prev) =>
-        prev.map((v) =>
-          v._id === id ? { ...v, ...editForm } : v
-        )
+        prev.map((v) => (v._id === id ? { ...v, ...editForm } : v))
       );
-
       setEditingVehicleId(null);
+      setImageFile(null);
     } catch (err) {
       console.error(err);
       setError("Error al actualizar vehículo");
@@ -126,14 +133,14 @@ const [error, setError] = useState(null);
         + Agregar vehículo
       </button>
 
-      {/* FORM CREAR */}
+      {/*FORM CREAR*/}
       {isCreating && (
         <div className="vehicle-card">
           <input name="brand" placeholder="Marca" onChange={handleChange} />
           <input name="model" placeholder="Modelo" onChange={handleChange} />
           <input name="price" type="number" placeholder="Precio" onChange={handleChange} />
           <input name="year" type="number" placeholder="Año" onChange={handleChange} />
-
+          <input type="file" accept="image/*" onChange={handleImageChange} /> 
           <button onClick={handleCreate}>Crear</button>
           <button onClick={() => setIsCreating(false)}>Cancelar</button>
         </div>
@@ -152,7 +159,7 @@ const [error, setError] = useState(null);
                   <input name="model" value={editForm.model} onChange={handleChange} />
                   <input name="price" value={editForm.price} onChange={handleChange} type="number" />
                   <input name="year" value={editForm.year} onChange={handleChange} type="number" />
-
+                  <input type="file" accept="image/*" onChange={handleImageChange} />
                   <button onClick={() => handleSave(vehicle._id)}>Guardar</button>
                   <button onClick={handleCancel}>Cancelar</button>
                 </>
@@ -166,6 +173,11 @@ const [error, setError] = useState(null);
                   <button onClick={() => handleEdit(vehicle)}>Editar</button>
                   <button onClick={() => handleMarkAsSold(vehicle._id)}>Marcar como vendido</button>
                   <button onClick={() => handleDelete(vehicle._id)}>Eliminar</button>
+
+                  {/* 👇 SOLO ESTO SE AGREGÓ */}
+                  <button onClick={() => navigate("/inbox")}>
+                    Ver mensajes
+                  </button>
                 </>
               )}
             </div>

@@ -1,16 +1,18 @@
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {BrowserRouter as Router, Routes, Route, Link, useNavigate} from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import MyVehicles from "./pages/MyVehicles";
+import Inbox from "./pages/Inbox";
 import "./App.css";
 
 //Navbar component
-function Navbar() {
+function Navbar({onOpenInbox}) {
   const navigate = useNavigate();
-  //Check if user is authenticated
   const isAuthenticated = !!localStorage.getItem("token");
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/vehicles");
@@ -21,21 +23,25 @@ function Navbar() {
       <div className="nav-left">
         <h2>TicoCars</h2>
       </div>
-
       <div className="nav-right">
         <Link to="/vehicles">Vehículos</Link>
 
-        {/* 👇 FIX AQUÍ */}
         <Link to={isAuthenticated ? "/my-vehicles" : "/login"}>
           Mis Vehículos
         </Link>
 
-        <Link to="#">Inbox</Link>
+        {/*KAN-43 Open inbox drawer — only when authenticated */}
+        {isAuthenticated && (
+          <button onClick={onOpenInbox}>Inbox</button>
+        )}
 
         {isAuthenticated ? (
           <button onClick={handleLogout}>Cerrar sesión</button>
         ) : (
-          <Link to="/login">Iniciar sesión</Link>
+          <>
+            <Link to="/login">Iniciar sesión</Link>
+            <Link to="/register">Registrarse</Link>
+          </>
         )}
       </div>
     </nav>
@@ -43,20 +49,46 @@ function Navbar() {
 }
 
 function App() {
+  //KAN-43 Inbox drawer state
+  const [inboxOpen, setInboxOpen] = useState(false);
+
   return (
     <Router>
-      <Navbar />
+      <Navbar onOpenInbox={() => setInboxOpen(true)} />
 
       <Routes>
-        {/* Main page */}
         <Route path="/" element={<Vehicles />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/vehicles/:id" element={<VehicleDetail />} />
         <Route path="/my-vehicles" element={<MyVehicles />} />
       </Routes>
+
+      {/*KAN-43 Inbox drawer. Renders on top of current page */}
+      {inboxOpen && (
+        <>
+          {/*KAN-43 Backdrop. Click to close */}
+          <div
+            className="inbox-backdrop"
+            onClick={() => setInboxOpen(false)}
+          />
+
+          {/*KAN-43 Drawer panel*/}
+          <div className="inbox-drawer">
+            <div className="inbox-drawer-header">
+              <span className="inbox-drawer-title">Inbox</span>
+              <button
+                className="inbox-close-btn"
+                onClick={() => setInboxOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <Inbox />
+          </div>
+        </>
+      )}
     </Router>
   );
 }

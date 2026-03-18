@@ -39,30 +39,19 @@ function Login() {
   
   //Here I return a simple form for user login with fields for email and password.
   return (
-    <div>
-      <h2>TicoCars - Login</h2>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={userInput.email}
-          onChange={handleChange}
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={userInput.password}
-          onChange={handleChange}
-        />
-
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-
-      {message && <p>{message}</p>}
+    <div className="auth-page">
+      <div className="card">
+        <h2>TicoCars — Iniciar sesión</h2>
+        <form onSubmit={handleSubmit}>
+          <input type="email" name="email" placeholder="Email"
+            value={userInput.email} onChange={handleChange} />
+          <input type="password" name="password" placeholder="Contraseña"
+            value={userInput.password} onChange={handleChange} />
+          <button type="submit">Iniciar sesión</button>
+        </form>
+        <p>¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
+        {message && <p>{message}</p>}
+      </div>
     </div>
   );
 }

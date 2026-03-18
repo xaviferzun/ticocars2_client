@@ -1,133 +1,271 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  background: linear-gradient(135deg, #141e30, #243b55);
-  min-height: 100vh;
-}
-
-/*Contenedor principal*/
+/* ===== LAYOUT ===== */
 #root {
   width: 100%;
-  max-width: 1000px;
-  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f0f4f8;
 }
 
-/*Contenedor de formularios*/
-.forms-container {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/*Card*/
-.card {
-  background-color: #1f2937;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 350px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
-
-.card h2 {
-  margin-bottom: 1.5rem;
-  color: #ffffff;
-}
-
-/*Inputs*/
-.card input {
+.page-container {
+  max-width: 1100px;
   width: 100%;
-  padding: 0.7rem;
-  margin-bottom: 1rem;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  background-color: #374151;
-  color: white;
+  margin: 0 auto;
+  padding: 32px 24px;
 }
 
-.card input::placeholder {
-  color: #9ca3af;
-}
-
-/*Botón*/
-.card button {
-  width: 100%;
-  padding: 0.7rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  background-color: #3b82f6;
-  color: white;
-  transition: background-color 0.2s ease;
-}
-
-.card button:hover {
-  background-color: #2563eb;
-}
-
-/*Mensaje*/
-.card p {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #22c55e;
-}
-
-/*Card de vehículos*/
-.vehicle-card {
-  border: 1px solid gray;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #1f2937;
-  color: white;
-}
-
-
+/* ===== NAVBAR ===== */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background-color: #0f172a; /* dark navy */
-  color: white;
-  border-bottom: 1px solid #1e293b;
+  padding: 0 32px;
+  height: 60px;
+  background-color: #2563eb;
+  border-bottom: 1px solid #1d4ed8;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .nav-left h2 {
-  color: #3b82f6;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .nav-right {
   display: flex;
-  gap: 20px;
+  gap: 8px;
   align-items: center;
 }
 
-.navbar a {
-  text-decoration: none;
-  color: #cbd5f5;
-  font-weight: 500;
-}
-
-.navbar a:hover {
-  color: white;
-}
-
-.navbar button {
-  background-color: #3b82f6;
-  border: none;
+.nav-right a {
+  color: #bfdbfe;
+  font-size: 0.9rem;
   padding: 6px 12px;
   border-radius: 6px;
-  color: white;
-  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+  text-decoration: none;
 }
 
-.navbar button:hover {
+.nav-right a:hover {
+  color: #ffffff;
+  background-color: #1d4ed8;
+}
+
+.nav-right button {
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  background-color: #ffffff;
+  color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nav-right button:hover {
+  background-color: #eff6ff;
+}
+
+/* ===== FILTERS ===== */
+.filters {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.filters input,
+.filters select {
+  width: 100%;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #1e293b;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.9rem;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+/* ===== VEHICLES GRID ===== */
+.vehicles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 8px;
+}
+
+/* ===== PAGINATION ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 32px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
   background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* ===== AUTH FORMS ===== */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 24px;
+  background-color: #f0f4f8;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+  font-size: 1.4rem;
+}
+
+.card input {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.card input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.card button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.card button:hover {
+  background-color: #1d4ed8;
+}
+
+.card p {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.card a {
+  color: #2563eb;
+}
+
+/* ===== KAN-43 INBOX DRAWER ===== */
+.inbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 100;
+}
+
+.inbox-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 700px;
+  max-width: 95vw;
+  height: 100vh;
+  background-color: #0f172a;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 24px rgba(0,0,0,0.3);
+  overflow-y: auto;
+}
+
+.inbox-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #1e293b;
+  position: sticky;
+  top: 0;
+  background-color: #0f172a;
+  z-index: 1;
+}
+
+.inbox-drawer-title {
+  color: #3b82f6;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.inbox-close-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.inbox-close-btn:hover {
+  color: #e2e8f0;
+  background-color: #1e293b;
 }

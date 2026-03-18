@@ -42,11 +42,26 @@ const getAuthConfig = () => ({
   },
 });
 
-//KAN-42 CREATE vehicle
-export const createVehicle = async (data) => {
-  const response = await axios.post(API_URL, data, getAuthConfig());
+//KAN-42 CREATE vehicle — uses FormData to support image upload
+export const createVehicle = async (data, imageFile) => {
+  const token = localStorage.getItem("token");
+  //Prepare form data for multipart request
+  const formData = new FormData();
+  formData.append("brand", data.brand);
+  formData.append("model", data.model);
+  formData.append("price", data.price);
+  formData.append("year", data.year);
+  if (data.description) formData.append("description", data.description);
+  if (imageFile) formData.append("image", imageFile);
+
+  const response = await axios.post(API_URL, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
+
 
 //KAN-42 DELETE vehicle
 export const deleteVehicle = async (id) => {
@@ -64,12 +79,22 @@ export const markAsSold = async (id) => {
   return response.data;
 };
 
-//KAN-42 UPDATE vehicle
-export const updateVehicle = async (id, data) => {
-  const response = await axios.put(
-    `${API_URL}/${id}`,
-    data,
-    getAuthConfig()
-  );
+//KAN-42 UPDATE vehicle — uses FormData to support image upload
+export const updateVehicle = async (id, data, imageFile) => {
+  const token = localStorage.getItem("token");
+  //Prepare form data for multipart request
+  const formData = new FormData();
+  formData.append("brand", data.brand);
+  formData.append("model", data.model);
+  formData.append("price", data.price);
+  formData.append("year", data.year);
+  if (data.description) formData.append("description", data.description);
+  if (imageFile) formData.append("image", imageFile);
+
+  const response = await axios.put(`${API_URL}/${id}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
