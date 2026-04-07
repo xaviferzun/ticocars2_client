@@ -6,7 +6,7 @@ import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import MyVehicles from "./pages/MyVehicles";
 import Inbox from "./pages/Inbox";
-import GoogleCallback from "../pages/GoogleCallback";
+import GoogleCallback from "./pages/GoogleCallback";
 import "./App.css";
 
 //Navbar component
