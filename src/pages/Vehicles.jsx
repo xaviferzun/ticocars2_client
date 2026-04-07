@@ -47,8 +47,9 @@ function Vehicles() {
     const fetchVehicles = async () => {
       setLoading(true);
       try {
-        const data = await getVehicles(filters);
+        const data = await getVehicles({...filters, page: currentPage, limit: 50}); //cambio, decir al profe
         setVehicles(data.results);
+        setTotalPages(data.totalPages);
       } catch (error) {
         setError("Error al cargar los vehículos");
       } finally {
@@ -57,7 +58,7 @@ function Vehicles() {
     };
 
     fetchVehicles();
-  }, [filters]);
+  }, [filters, currentPage]);
 
   //Warnings
   if (loading) return <p>Cargando...</p>;

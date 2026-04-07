@@ -27,7 +27,7 @@
 }
 
 .vehicle-card-body {
-  padding: 36px; 
+  padding: 16px 20px; 
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -37,7 +37,7 @@
 .vehicle-card-title {
   font-size: 1rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #111111; 
 }
 
 .vehicle-card-year {
@@ -74,7 +74,7 @@
   margin-top: auto;
   width: 100%;
   padding: 10px;
-  background-color: #2563eb;
+  background-color: #2563eb; 
   color: white;
   border: none;
   border-radius: 8px;
