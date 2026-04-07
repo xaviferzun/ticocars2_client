@@ -1,5 +1,18 @@
 const API_URL = "http://localhost:3000/api/auth";
 
+//Function to validate a cedula against the padron API through our backend
+export const validateCedula = async (cedula) => {
+  const response = await fetch(`${API_URL}/validate-cedula?cedula=${cedula}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Error al validar la cédula");
+  }
+
+  return data;
+};
+
 //Function to register a new user
 export const registerUser = async (userData) => {
   const response = await fetch(`${API_URL}/register`, {
