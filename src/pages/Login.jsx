@@ -36,7 +36,12 @@ function Login() {
       setMessage(error.message);
     }
   };
-  
+
+  //Redirect to backend to start the Google OAuth2 flow
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:3000/api/auth/google";
+  };
+
   //Here I return a simple form for user login with fields for email and password.
   return (
     <div className="auth-page">
@@ -49,6 +54,15 @@ function Login() {
             value={userInput.password} onChange={handleChange} />
           <button type="submit">Iniciar sesión</button>
         </form>
+
+        {/*KAN-59 Google OAuth2 login button */}
+        <div className="divider">
+          <span>o</span>
+        </div>
+        <button className="google-btn" onClick={handleGoogleLogin}>
+          Continuar con Google
+        </button>
+
         <p>¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
         {message && <p>{message}</p>}
       </div>
