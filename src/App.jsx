@@ -6,6 +6,7 @@ import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import MyVehicles from "./pages/MyVehicles";
 import Inbox from "./pages/Inbox";
+import GoogleCallback from "../pages/GoogleCallback";
 import "./App.css";
 
 //Navbar component
@@ -63,6 +64,8 @@ function App() {
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/vehicles/:id" element={<VehicleDetail />} />
         <Route path="/my-vehicles" element={<MyVehicles />} />
+        {/*KAN-59 Route to handle Google OAuth2 callback and save token */}
+        <Route path="/google-callback" element={<GoogleCallback />} />
       </Routes>
 
       {/*KAN-43 Inbox drawer. Renders on top of current page */}
