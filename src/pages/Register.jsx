@@ -72,7 +72,7 @@ function Register() {
     <div className="auth-page">
       <div className="card">
         <h2>TicoCars — Registro</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onKeyDown={(e) => { if (e.key === "Enter") e.preventDefault(); }}>
           <input
             type="text"
             name="cedula"
@@ -83,10 +83,13 @@ function Register() {
             maxLength={9}
           />
 
-          {/* Show autocompleted name from padron */}
+          {/* Show autocompleted fields from padron */}
           {padronInfo && (
             <div className="padron-info">
-              <p>✓ Cédula válida: {padronInfo.nombre} {padronInfo.apellidoPaterno} {padronInfo.apellidoMaterno}</p>
+              <p>✓ Cédula válida</p>
+              <input type="text" value={padronInfo.nombre || ""} readOnly placeholder="Nombre" />
+              <input type="text" value={padronInfo.apellidoPaterno || ""} readOnly placeholder="Apellido paterno" />
+              <input type="text" value={padronInfo.apellidoMaterno || ""} readOnly placeholder="Apellido materno" />
             </div>
           )}
 
