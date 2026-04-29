@@ -1,5 +1,5 @@
 
-//KAN-62 Page to show it after registration
+//KAN-62 Page to show it after registration. 
 function CheckEmail() {
   return (
     <div className="auth-page">
