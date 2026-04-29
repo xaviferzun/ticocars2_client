@@ -52,3 +52,16 @@ export const loginUser = async (credentials) => {
 
   return data;
 };
+
+//Function to activate a user account via email token
+export const activateAccount = async (token) => {
+  const response = await fetch(`${API_URL}/activate?token=${token}`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Error al activar la cuenta");
+  }
+
+  return data;
+};
