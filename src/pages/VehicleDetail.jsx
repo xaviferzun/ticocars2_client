@@ -99,10 +99,12 @@ const VehicleDetail = () => {
             {vehicle.status === "available" ? "Disponible" : "Vendido"}
           </span>
         </div>
-          {vehicle.owner?.username && (
+        {vehicle.owner?.username && (
           <div className="detail-row">
             <span className="detail-label">Publicado por</span>
-            <span className="detail-value">{vehicle.owner.username}</span>
+            <span className="detail-value">
+              {vehicle.owner.username} — {vehicle.owner.email}
+            </span>
           </div>
         )}
       </div>
@@ -110,7 +112,7 @@ const VehicleDetail = () => {
       {/* Sección de pregunta */}
       {!hasPendingQuestion ? (
         <div className="detail-question-section">
-          <h3>Escribe tu pregunta</h3>
+          <h3>Envía una pregunta a {vehicle.owner?.username}</h3>
           <textarea
             placeholder="Escribe tu pregunta sobre este vehículo..."
             value={questionText}

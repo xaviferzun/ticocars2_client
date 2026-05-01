@@ -26,11 +26,9 @@ function Login() {
     e.preventDefault();
     try {
       const result = await loginUser(userInput);
-
-      //Save token in localStorage for future authenticated requests
       localStorage.setItem("token", result.token);
-      setMessage("Ingreso existoso (Token guardado)");
-      //Navigate to the vehicles page
+      //KAN-62 Save the userame to display on navbar
+      localStorage.setItem("username", result.username);
       navigate("/vehicles");
     } catch (error) {
       setMessage(error.message);
