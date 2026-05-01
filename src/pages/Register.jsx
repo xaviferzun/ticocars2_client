@@ -8,6 +8,7 @@ function Register() {
     email: "",
     password: "",
     cedula: "",
+    phone: "", //KAN-63 For verificartion
   });
 
   //State to show the name autocompleted from the padron
@@ -112,6 +113,13 @@ function Register() {
             name="password"
             placeholder="Contraseña"
             value={userInput.password}
+            onChange={handleChange}
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Teléfono (ej: 87154039)"
+            value={userInput.phone}
             onChange={handleChange}
           />
           <button type="submit" disabled={loading}>
