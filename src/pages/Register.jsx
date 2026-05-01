@@ -52,14 +52,14 @@ function Register() {
     e.preventDefault();
 
     if (!padronInfo) {
-      setMessage("Debes validar tu cédula antes de registrarte.");
+      setMessage("Debes validar tu cédula antes de registrarte. ");
       return;
     }
-
     try {
       setLoading(true);
-      const result = await registerUser(userInput);
-      setMessage(result.message);
+      await registerUser(userInput);
+      //KAN-62 Redirect user to check email page after registration 
+      window.location.href = "/check-email";
     } catch (error) {
       setMessage(error.message);
     } finally {

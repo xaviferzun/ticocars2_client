@@ -87,3 +87,14 @@
 .vehicle-card-btn:hover {
   background-color: #1d4ed8;
 }
+
+.vehicle-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vehicle-card-owner {
+  font-size: 0.85rem;
+  color: #666;
+}

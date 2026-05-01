@@ -8,14 +8,18 @@ import MyVehicles from "./pages/MyVehicles";
 import Inbox from "./pages/Inbox";
 import GoogleCallback from "./pages/GoogleCallback";
 import "./App.css";
+import CheckEmail from "./pages/CheckEmail";
+import Activate from "./pages/Activate";
 
 //Navbar component
 function Navbar({onOpenInbox}) {
   const navigate = useNavigate();
   const isAuthenticated = !!localStorage.getItem("token");
+  const username = localStorage.getItem("username");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     navigate("/vehicles");
   };
 
@@ -37,7 +41,11 @@ function Navbar({onOpenInbox}) {
         )}
 
         {isAuthenticated ? (
-          <button onClick={handleLogout}>Cerrar sesión</button>
+          <>
+            {/*KAN-62 Username button logs out on cliclk*/}
+            <button onClick={handleLogout}>
+              {username ? username : "Mi cuenta"} — Cerrar sesión </button>
+          </>
         ) : (
           <>
             <Link to="/login">Iniciar sesión</Link>
@@ -58,12 +66,14 @@ function App() {
       <Navbar onOpenInbox={() => setInboxOpen(true)} />
 
       <Routes>
-        <Route path="/" element={<Vehicles />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/vehicles" element={<Vehicles />} />
-        <Route path="/vehicles/:id" element={<VehicleDetail />} />
-        <Route path="/my-vehicles" element={<MyVehicles />} />
+        <Route path="/" element={<Vehicles/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
+        <Route path="/vehicles" element={<Vehicles/>} />
+        <Route path="/vehicles/:id" element={<VehicleDetail/>} />
+        <Route path="/my-vehicles" element={<MyVehicles/>} />
+        <Route path="/check-email" element={<CheckEmail/>} />
+        <Route path="/activate" element={<Activate />}/>
         {/*KAN-59 Route to handle Google OAuth2 callback and save token */}
         <Route path="/google-callback" element={<GoogleCallback />} />
       </Routes>

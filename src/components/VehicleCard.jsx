@@ -22,7 +22,11 @@ function VehicleCard({ vehicle }) {
       )}
 
       <div className="vehicle-card-body">
-        <h3 className="vehicle-card-title">{vehicle.brand} {vehicle.model}</h3>
+          {/*KAN-62 Show owner username*/}
+        <div className="vehicle-card-header">
+          <h3 className="vehicle-card-title">{vehicle.brand} {vehicle.model}</h3>
+          <span className="vehicle-card-owner">{vehicle.owner?.username || ""}</span>
+        </div>
         <p className="vehicle-card-year">Año: {vehicle.year}</p>
         <p className="vehicle-card-price">Precio: ${vehicle.price}</p>
         <span className={`vehicle-card-status ${vehicle.status === "available" ? "status-available" : "status-sold"}`}>
