@@ -63,3 +63,18 @@ export const activateAccount = async(token)=>{
   }
   return data;
 };
+
+//KAN-65 Function to verify thje code 2FA and get token
+export const verify2FA = async (userId, code) => {
+  const response = await fetch(`${API_URL}/verify-2fa`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({userId, code}),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Error al verificar el código");
+  }
+
+  return data;
+};
