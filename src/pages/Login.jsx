@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {loginUser} from "../services/authService";
+import {loginUser, verify2FA} from "../services/authService";
 
 //Here I create a simple login form that allows users to enter their email and password.
 function Login() {
@@ -12,6 +12,10 @@ function Login() {
 
   //Variable to show messages to the user
   const [message, setMessage] = useState("");
+
+  //KAN-65 state to handle 2FA step
+  const [userId, setUserId] = useState(null);
+  const [twoFACode, setTwoFACode] = useState("");
 
   //Function to handle form changes and update the state
   const handleChange = (e) => {
@@ -26,10 +30,22 @@ function Login() {
     e.preventDefault();
     try {
       const result = await loginUser(userInput);
+      //KAN-65 Save userId and show 2fa form
+      setUserId(result.userId);
+      setMessage(result.message);
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
+  //KAN-65 Function to verify the 2FA code
+  const handle2FASubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await verify2FA(userId, twoFACode);
       localStorage.setItem("token", result.token);
-      //KAN-62 Save the userame to display on navbar
       localStorage.setItem("username", result.username);
-      navigate("/vehicles");
+      navigate("/vehicles");      
     } catch (error) {
       setMessage(error.message);
     }
@@ -40,18 +56,34 @@ function Login() {
     window.location.href = "http://localhost:3000/api/auth/google";
   };
 
-  //Here I return a simple form for user login with fields for email and password.
+  //KAN-65 Here I return a simple form for user login with fields for email and password.
   return (
     <div className="auth-page">
       <div className="card">
         <h2>TicoCars — Iniciar sesión</h2>
-        <form onSubmit={handleSubmit}>
-          <input type="email" name="email" placeholder="Email"
-            value={userInput.email} onChange={handleChange} />
-          <input type="password" name="password" placeholder="Contraseña"
-            value={userInput.password} onChange={handleChange} />
-          <button type="submit">Iniciar sesión</button>
-        </form>
+
+        {!userId ? (
+          <form onSubmit={handleSubmit}>
+            <input type="email" name="email" placeholder="Email"
+              value={userInput.email} onChange={handleChange} />
+            <input type="password" name="password" placeholder="Contraseña"
+              value={userInput.password} onChange={handleChange} />
+            <button type="submit">Iniciar sesión</button>
+          </form>
+        ) : (
+          //KAN-65 2FA code form shown after successful login
+          <form onSubmit={handle2FASubmit}>
+            <p>Ingresa el codigo enviado a tu teléfono</p>
+            <input
+              type="text"
+              placeholder="Código de verificación"
+              value={twoFACode}
+              onChange={(e) => setTwoFACode(e.target.value)}
+              maxLength={6}
+            />
+            <button type="submit">Verificar código</button>
+          </form>
+        )}
 
         {/*KAN-59 Google OAuth2 login button */}
         <div className="divider">
@@ -60,7 +92,6 @@ function Login() {
         <button className="google-btn" onClick={handleGoogleLogin}>
           Continuar con Google
         </button>
-
         <p>¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
         {message && <p>{message}</p>}
       </div>

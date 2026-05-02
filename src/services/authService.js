@@ -75,6 +75,5 @@ export const verify2FA = async (userId, code) => {
   if (!response.ok) {
     throw new Error(data.message || "Error al verificar el código");
   }
-
   return data;
 };
