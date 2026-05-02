@@ -1,0 +1,47 @@
+const GRAPHQL_URL = "http://localhost:4000";
+
+//KAN-69 Function to query vehicles from the graphQL API with optional filters
+export const queryVehicles = async (filters = {}) => {
+  const token = localStorage.getItem("token");
+
+  const query = `
+    query GetVehicles($brand: String, $model: String, $status: String) {
+      vehicles(brand: $brand, model: $model, status: $status) {
+        id
+        brand
+        model
+        year
+        price
+        status
+        owner {
+          username
+        }
+      }
+    }
+  `;
+
+  //KAN-69 POST request to GraphQL endpoint with query and variables. Include jwt token in auth header if available
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify({
+      query,
+      variables: {
+        brand: filters.brand || null,
+        model: filters.model || null,
+        status: filters.status || null,
+      },
+    }),
+  });
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+
+  return data.data.vehicles;
+};
