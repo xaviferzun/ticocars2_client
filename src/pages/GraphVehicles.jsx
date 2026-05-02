@@ -22,7 +22,27 @@ function GraphVehicles() {
     fetchVehicles();
   }, []);
 
-  //retun continuar mañana
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
 
-
+  //KAN-69 Show the list or message if no found vehicles
+  return (
+    <div style={{ padding: "32px" }}>
+      <h2>Vehículos</h2>
+      {vehicles.length === 0 ? (
+        <p>No se encontraron vehículos.</p>
+      ) : (
+        <ul>
+          {vehicles.map((v) => (
+            <li key={v.id}>
+              <strong>{v.brand} {v.model}</strong> — {v.year} — ${v.price} — {v.status}
+              {v.owner && <span> — Publicado por: {v.owner.username}</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
+
+export default GraphVehicles;
