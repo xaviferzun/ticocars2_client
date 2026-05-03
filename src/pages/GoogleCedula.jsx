@@ -21,14 +21,48 @@ function GoogleCedula() {
     }
   }, [navigate]);
 
+  //Validate cedula against the padron when field loses focus
+  const handleCedulaBlur = async () => {
+    if (cedula.length !== 9) return;
+    try {
+      setLoading(true);
+      const { validateCedula } = await import("../services/authService");
+      const result = await validateCedula(cedula);
+      setPadronInfo(result);
+      setMessage("");
+    } catch (error) {
+      setPadronInfo(null);
+      setMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  //pendiente handle para validar cedula contra el padron
-  //pendiente submit para actuvar la cuenta
+  //Submit cedula to activate the Google account
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!padronInfo) {
+      setMessage("Debes validar tu cédula primero.");
+      return;
+    }
+    try {
+      setLoading(true);
+      await validateCedulaGoogle(cedula);
+      navigate("/vehicles");
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   //pendiente pa mañana crear estructura de la pagina
-
-
-
-
-
+  return (
+    <div className="auth-page">
+      <div className="card">
+      </div>
+    </div>
+  );
 }
+
+export default GoogleCedula;
