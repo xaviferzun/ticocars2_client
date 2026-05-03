@@ -77,3 +77,25 @@ export const verify2FA = async (userId, code) => {
   }
   return data;
 };
+
+//KAN-73 Function to validate the cedula for Google users after OAuth registration
+export const validateCedulaGoogle = async (cedula) => {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/google-cedula`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ cedula })
+  });
+  
+  //Validate the response and return the data or show an error
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Error al validar la cédula");
+  }
+
+  return data;
+};

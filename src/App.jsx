@@ -8,6 +8,7 @@ import MyVehicles from "./pages/MyVehicles";
 import GraphVehicles from "./pages/GraphVehicles";
 import Inbox from "./pages/Inbox";
 import GoogleCallback from "./pages/GoogleCallback";
+import GoogleCedula from "./pages/GoogleCedula";
 import "./App.css";
 import CheckEmail from "./pages/CheckEmail";
 import Activate from "./pages/Activate";
@@ -78,6 +79,8 @@ function App() {
         <Route path="/activate" element={<Activate />}/>
         {/*KAN-59 Route to handle Google OAuth2 callback and save token */}
         <Route path="/google-callback" element={<GoogleCallback />} />
+        {/*KAN-73 Route for Google users to validate cedula after OAuth registration */}
+        <Route path="/google-cedula" element={<GoogleCedula />} />
       </Routes>
 
       {/*KAN-43 Inbox drawer. Renders on top of current page */}
