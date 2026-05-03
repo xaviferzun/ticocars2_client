@@ -60,6 +60,30 @@ function GoogleCedula() {
   return (
     <div className="auth-page">
       <div className="card">
+        <h2>Valida tu identidad</h2>
+        <p>Para completar tu registro con Google ingresa tu número de cédula.</p>
+        <form onSubmit={handleSubmit} onKeyDown={(e) => {if (e.key === "Enter") e.preventDefault();}}>
+          <input
+            type="text"
+            placeholder="Número de cédula (9 dígitos)"
+            value={cedula}
+            onChange={(e) => {setCedula(e.target.value); setPadronInfo(null);}}
+            onBlur={handleCedulaBlur}
+            maxLength={9}
+          />
+          {padronInfo && (
+            <div className="padron-info">
+              <p>✓ Cédula válida</p>
+              <input type="text" value={padronInfo.nombre || ""} readOnly placeholder="Nombre"/>
+              <input type="text" value={padronInfo.apellidoPaterno || ""} readOnly placeholder="Apellido paterno"/>
+              <input type="text" value={padronInfo.apellidoMaterno || ""} readOnly placeholder="Apellido materno"/>
+            </div>
+          )}
+          <button type="submit" disabled={loading}>
+            {loading ? "Procesando..." : "Confirmar cédula"}
+          </button>
+        </form>
+        {message && <p>{message}</p>}
       </div>
     </div>
   );
