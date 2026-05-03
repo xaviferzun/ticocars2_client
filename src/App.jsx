@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import MyVehicles from "./pages/MyVehicles";
+import GraphVehicles from "./pages/GraphVehicles";
 import Inbox from "./pages/Inbox";
 import GoogleCallback from "./pages/GoogleCallback";
 import "./App.css";
@@ -72,6 +73,7 @@ function App() {
         <Route path="/vehicles" element={<Vehicles/>} />
         <Route path="/vehicles/:id" element={<VehicleDetail/>} />
         <Route path="/my-vehicles" element={<MyVehicles/>} />
+        <Route path="/graph-vehicles" element={<GraphVehicles/>}/>
         <Route path="/check-email" element={<CheckEmail/>} />
         <Route path="/activate" element={<Activate />}/>
         {/*KAN-59 Route to handle Google OAuth2 callback and save token */}
