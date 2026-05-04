@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getInbox, answerQuestion } from "../services/questionService";
+import {answerQuestion} from "../services/questionService";
+import {queryInbox} from "../services/graphqlService"; //KAN-74 Graphql for inbox data
 import "../Inbox.css";
 
 //KAN-43 Decode JWT to get current user id 
@@ -30,7 +31,7 @@ function Inbox() {
   useEffect(() => {
     const loadInbox = async () => {
       try {
-        const data = await getInbox();
+        const data = await queryInbox();
         setConversations(data);
       } catch (err) {
         setError("Error al cargar las conversaciones");
@@ -56,7 +57,7 @@ function Inbox() {
       await answerQuestion(questionId, text);
 
       //Reload inbox to show new answer
-      const updated = await getInbox();
+      const updated = await queryInbox();
       setConversations(updated);
 
       //Clear reply input for this question
@@ -83,17 +84,16 @@ function Inbox() {
       {conversations.map((conv) => {
 
         //KAN-43 Determine if current user is the vehicle owner
-        const isOwner =
-          conv.vehicle?.owner?.toString() === currentUserId;
+        const isOwner = conv.vehicle?.owner?.id === currentUserId;
 
         return (
-          <div key={conv._id} className="inbox-card">
+          <div key={conv.id} className="inbox-card">
 
             {/*Card header — vehicle name and role badge */}
             <div className="inbox-card-header">
               <span
                 className="inbox-vehicle-name"
-                onClick={() => navigate(`/vehicles/${conv.vehicle?._id}`)}
+                onClick={() => navigate(`/vehicles/${conv.vehicle?.id}`)}
               >
                 {conv.vehicle?.brand} {conv.vehicle?.model} {conv.vehicle?.year}
               </span>
@@ -109,7 +109,7 @@ function Inbox() {
               </p>
               <p className="inbox-block-text">{conv.text}</p>
               <p className="inbox-block-date">
-                {new Date(conv.createdAt).toLocaleDateString("es-CR")}
+                {conv.createdAt ? new Date(parseInt(conv.createdAt)).toLocaleDateString("es-CR") : ""}
               </p>
             </div>
 
@@ -121,7 +121,7 @@ function Inbox() {
                 </p>
                 <p className="inbox-block-text">{conv.answer.text}</p>
                 <p className="inbox-block-date">
-                  {new Date(conv.answer.createdAt).toLocaleDateString("es-CR")}
+                  {conv.answer.createdAt ? new Date(parseInt(conv.answer.createdAt)).toLocaleDateString("es-CR") : ""}
                 </p>
               </div>
             )}
@@ -133,13 +133,13 @@ function Inbox() {
                   className="inbox-textarea"
                   placeholder="Escribe tu respuesta..."
                   rows={3}
-                  value={replyText[conv._id] || ""}
-                  onChange={(e) => handleReplyChange(conv._id, e.target.value)}
+                  value={replyText[conv.id] || ""}
+                  onChange={(e) => handleReplyChange(conv.id, e.target.value)}
                 />
                 <button
                   className="inbox-send-btn"
-                  onClick={() => handleAnswer(conv._id)}
-                  disabled={submitting || !replyText[conv._id]?.trim()}
+                  onClick={() => handleAnswer(conv.id)}
+                  disabled={submitting || !replyText[conv.id]?.trim()}
                 >
                   {submitting ? "Enviando..." : "Responder"}
                 </button>
