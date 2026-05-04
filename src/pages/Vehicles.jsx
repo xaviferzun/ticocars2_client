@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getVehicles} from "../services/vehicleService";
+import {queryVehicles} from "../services/graphqlService";
 import VehicleCard from "../components/VehicleCard";
 
 //Component to display the list of vehicles
@@ -47,9 +47,14 @@ function Vehicles() {
     const fetchVehicles = async () => {
       setLoading(true);
       try {
-        const data = await getVehicles({...filters, page: currentPage, limit: 50}); //cambio, decir al profe
-        setVehicles(data.results);
-        setTotalPages(data.totalPages);
+        //bKAN-74 Use GraphQL instead of REST for vehicle queries
+        const results = await queryVehicles({
+          brand: filters.brand,
+          model: filters.model,
+          status: filters.status,
+        });
+        setVehicles(results);
+        setTotalPages(1);
       } catch (error) {
         setError("Error al cargar los vehículos");
       } finally {
@@ -127,7 +132,7 @@ function Vehicles() {
       ) : (
         <div className="vehicles-grid">
           {vehicles.map((vehicle) => (
-            <VehicleCard key={vehicle._id} vehicle={vehicle} />
+            <VehicleCard key={vehicle.id} vehicle={vehicle}/>
           ))}
         </div>
       )}

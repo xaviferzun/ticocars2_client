@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useParams, useNavigate} from "react-router-dom";
-import {getVehicleById} from "../services/vehicleService";
+import { queryVehicleById } from "../services/graphqlService"; //KAN-74
 import {createQuestion} from "../services/questionService";
 import {getUserQuestions} from "../services/questionService";
 import "../VehicleDetail.css";
@@ -20,13 +20,13 @@ const VehicleDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const vehicleData = await getVehicleById(id);
+        const vehicleData = await queryVehicleById(id); //KAN-74
         setVehicle(vehicleData);
         const token = localStorage.getItem("token");
         if (token) {
           const userQuestions = await getUserQuestions();
           const exists = userQuestions.find(
-            (q) => q.vehicle?._id === id && !q.answer
+            (q) => q.vehicle?._id === id && !q.answer 
           );
           setHasPendingQuestion(!!exists);
         }
@@ -44,7 +44,7 @@ const VehicleDetail = () => {
     if (!token) { navigate("/login"); return; }
     if (!questionText.trim()) { setMessage("La pregunta no puede estar vacía"); return; }
     try {
-      await createQuestion({ vehicleId: vehicle._id, text: questionText });
+      await createQuestion({vehicleId: vehicle.id, text: questionText}); //KAN-74
       setQuestionText("");
       setMessage("Pregunta enviada correctamente");
     } catch (error) {

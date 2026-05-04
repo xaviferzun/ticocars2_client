@@ -1,6 +1,6 @@
 const GRAPHQL_URL = "http://localhost:4000";
 
-//KAN-69 Function to query vehicles from the graphQL API with optional filters
+//KAN-69 Function to query vehicles from the GraphQL API with optional filters
 export const queryVehicles = async (filters = {}) => {
   const token = localStorage.getItem("token");
 
@@ -13,6 +13,7 @@ export const queryVehicles = async (filters = {}) => {
         year
         price
         status
+        images
         owner {
           username
         }
@@ -44,4 +45,45 @@ export const queryVehicles = async (filters = {}) => {
   }
 
   return data.data.vehicles;
+};
+
+//bKAN-74 Function to query a single vehicle by ID from the graph api
+export const queryVehicleById = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const query = `
+    query GetVehicle($id: ID!) {
+      vehicle(id: $id) {
+        id
+        brand
+        model
+        year
+        price
+        description
+        status
+        images
+        owner {
+          username
+          email
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify({ query, variables: { id } }),
+  });
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+
+  return data.data.vehicle;
 };
