@@ -87,3 +87,38 @@ export const queryVehicleById = async (id) => {
 
   return data.data.vehicle;
 };
+
+//bKAN-74 Function to query vehicles of the authenticated user from the graph api
+export const queryMyVehicles = async () => {
+  const token = localStorage.getItem("token");
+  const query = `
+    query {
+      myVehicles {
+        id
+        brand
+        model
+        year
+        price
+        status
+        images
+      }
+    }
+  `;
+
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && {Authorization: `Bearer ${token}`}),
+    },
+    body: JSON.stringify({query}),
+  });
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+
+  return data.data.myVehicles;
+};
