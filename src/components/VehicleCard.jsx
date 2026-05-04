@@ -6,7 +6,7 @@ function VehicleCard({ vehicle }) {
   const navigate = useNavigate();
 
   const handleViewDetail = () => {
-    navigate(`/vehicles/${vehicle._id}`);
+    navigate(`/vehicles/${vehicle.id}`);
   };
 
   return (

@@ -1,6 +1,7 @@
-const GRAPHQL_URL = "http://localhost:4000";
+//const GRAPHQL_URL = "http://localhost:4000";
+const GRAPHQL_URL = "http://localhost:4000/graphql";
 
-//KAN-69 Function to query vehicles from the graphQL API with optional filters
+//KAN-69 Function to query vehicles from the GraphQL API with optional filters
 export const queryVehicles = async (filters = {}) => {
   const token = localStorage.getItem("token");
 
@@ -13,6 +14,7 @@ export const queryVehicles = async (filters = {}) => {
         year
         price
         status
+        images
         owner {
           username
         }
@@ -44,4 +46,133 @@ export const queryVehicles = async (filters = {}) => {
   }
 
   return data.data.vehicles;
+};
+
+//bKAN-74 Function to query a single vehicle by ID from the graph api
+export const queryVehicleById = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const query = `
+    query GetVehicle($id: ID!) {
+      vehicle(id: $id) {
+        id
+        brand
+        model
+        year
+        price
+        description
+        status
+        images
+        owner {
+          username
+          email
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify({ query, variables: { id } }),
+  });
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+
+  return data.data.vehicle;
+};
+
+//bKAN-74 Function to query vehicles of the authenticated user from the graph api
+export const queryMyVehicles = async () => {
+  const token = localStorage.getItem("token");
+  const query = `
+    query {
+      myVehicles {
+        id
+        brand
+        model
+        year
+        price
+        status
+        images
+      }
+    }
+  `;
+
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && {Authorization: `Bearer ${token}`}),
+    },
+    body: JSON.stringify({query}),
+  });
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+
+  return data.data.myVehicles;
+};
+
+//bKAN-74 Function to query inbox conversations to graphql
+export const queryInbox = async () => {
+  const token = localStorage.getItem("token");
+
+  const query = `
+    query {
+      inbox {
+        id
+        text
+        createdAt
+        user {
+          id
+          username
+        }
+        vehicle {
+          id
+          brand
+          model
+          year
+          owner {
+            id
+            username
+          }
+        }
+        answer {
+          id
+          text
+          createdAt
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && {Authorization: `Bearer ${token}`}),
+    },
+    body: JSON.stringify({ query }),
+  });
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(data.errors[0].message);
+  }
+  return data.data.inbox;
 };

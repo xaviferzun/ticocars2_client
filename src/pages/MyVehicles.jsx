@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getMyVehicles, deleteVehicle, markAsSold, updateVehicle, createVehicle} from "../services/vehicleService";
+import {queryMyVehicles} from "../services/graphqlService";
 import "../MyVehicles.css";
 
 const API_BASE = "http://localhost:3000";
@@ -19,8 +20,9 @@ function MyVehicles() {
     const fetchMyVehicles = async () => {
       setLoading(true);
       try {
-        const data = await getMyVehicles();
-        setVehicles(data);
+        const data = await queryMyVehicles();
+        const mapped = data.map(v => ({...v, _id: v.id})); //KAN-74 Map graph id to _id for compatibility with current behavir
+        setVehicles(mapped);
       } catch (error) {
         setError("Error al cargar tus vehículos");
       } finally {
