@@ -1,4 +1,5 @@
-const GRAPHQL_URL = "http://localhost:4000";
+//const GRAPHQL_URL = "http://localhost:4000";
+const GRAPHQL_URL = "http://localhost:4000/graphql";
 
 //KAN-69 Function to query vehicles from the GraphQL API with optional filters
 export const queryVehicles = async (filters = {}) => {
