@@ -24,6 +24,7 @@ function Inbox() {
   const [error, setError] = useState(null);
   const [replyText, setReplyText] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [replyError, setReplyError] = useState({});
 
   const currentUserId = getUserIdFromToken();
 
@@ -44,7 +45,9 @@ function Inbox() {
 
   //KAN-43 Track reply text per conversation using question id as key
   const handleReplyChange = (questionId, value) => {
-    setReplyText((prev) => ({ ...prev, [questionId]: value }));
+    setReplyText((prev) => ({...prev, [questionId]: value}));
+    //KAN-72 Clear error when user start typing again
+    setReplyError((prev) => ({...prev, [questionId]: null}));
   };
 
   //KAN-43 Handle answer submission
@@ -63,7 +66,9 @@ function Inbox() {
       //Clear reply input for this question
       setReplyText((prev) => ({ ...prev, [questionId]: "" }));
     } catch (err) {
-      alert("Error al enviar la respuesta");
+      //feature/KAN-72 Show blocked message error inline
+      const errorMsg = err.response?.data?.message || err.message || "La respuesta contiene información personal no permitida.";
+      setReplyError((prev) => ({...prev, [questionId]: errorMsg}));    
     } finally {
       setSubmitting(false);
     }
@@ -143,6 +148,12 @@ function Inbox() {
                 >
                   {submitting ? "Enviando..." : "Responder"}
                 </button>
+                {/*KAN-72 Show AI blocked message*/}
+                {replyError[conv.id] && (
+                  <p className="detail-message">
+                    {replyError[conv.id]}
+                  </p>
+                )}
               </div>
             )}
 
